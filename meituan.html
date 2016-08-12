@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		  <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react-dom.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/browser.min.js"></script>
+    <style>
+    .menu{
+    	background: #3cb0d0;
+    	width:100%;
+    	padding: 5px 5px 0;
+    	color:white;
+    }
+    .select{
+    	background-color: #fff;
+    	color: #000;
+    }
+    .menuItem{
+    	display: inline-block;
+    	width:50%;
+    	font-size: 16px;
+    	line-height: 40px;
+    	text-align: center;
+    }
+    	.size{
+    		cursor: pointer;
+    		font-size: 16px;
+    		line-height: 58px;
+    		width: 100%;
+    		border-bottom: 1px solid #eee;
+    		text-align: center;
+    		font-family: sans-serif;
+    		
+    	}
+    	.head{
+    		background: #3cb0d0;
+    		width: 100%;
+    padding: 5px 5px 0;
+    height: 40px;
+    color: #fff;
+    
+    	}
+    	.default{
+    		display: none;
+    	}
+    	table{
+    		border-bottom:1px solid #ccc ;
+    		width:100%;
+    	}
+    	td span{
+    		margin:20px;
+    	}
+    </style>
+	</head>
+	<body>
+		<div id="main"></div>
+		<script type="text/babel">
+		var Component=React.createClass({
+			
+			render:function(){
+			 	 return  (
+			 	 <div>
+			 	 	<Menu></Menu>
+			 	 	
+			 	 </div>
+			 	 );
+			}	
+		})
+		//Menu组件
+		var Menu=React.createClass({
+			getInitialState:function(){
+				
+				return{
+					con_classname:"select",
+					hot_classname:"",
+					default:"display:none;",
+				};
+			},
+			conClick:function(){
+				var con=React.findDOMNode(this.refs.con);
+				var hot=React.findDOMNode(this.refs.hot);
+				this.setState({con_classname:"select",hot_classname:""});
+				con.style.display="block";
+				hot.style.display="none";
+			},
+			hotClick:function(){
+				var con=React.findDOMNode(this.refs.con);
+				var hot=React.findDOMNode(this.refs.hot);
+				this.setState({con_classname:"",hot_classname:"select"});
+				con.style.display="none";
+				hot.style.display="block";
+			},
+			componentDidMount:function(){
+				var hot=React.findDOMNode(this.refs.hot);
+				hot.style.display="none";
+			},
+			render:function(){
+				return(
+					<div>
+					<div className="menu">
+						<div className={"menuItem "+this.state.con_classname} onClick={this.conClick}>筛选条件</div>
+						<div className={"menuItem "+this.state.hot_classname} onClick={this.hotClick}>酒店列表</div>
+					</div>
+					<Condition  ref="con" onClick={this.handleClick} content="筛选条件"></Condition>
+					<HotelList ref="hot" onClick={this.handleClick} content="酒店列表"></HotelList>
+					</div>
+				)
+			}
+		})
+	   
+		
+		//筛选条件组件
+		var Condition=React.createClass({
+			render:function(){
+				return(
+				<div>
+				<Price></Price>
+				<Hotel></Hotel>
+				</div>
+				)
+			}
+		})
+		//价格范围组件
+		var Price=React.createClass({
+			componentDidMount:function(){
+				var olist=React.findDOMNode(this.refs.list);
+				olist.style.display="none";
+				
+			},
+			handleClick:function(){
+				var olist=React.findDOMNode(this.refs.list);
+				olist.style.display=olist.style.display=="block"?"none":"block";
+			},
+			
+			render:function(){
+				return(
+				<div className="size">
+					<div onClick={this.handleClick}>价格范围</div>
+					<div ref="list"> 
+						<PriceItem content="200元以下"></PriceItem>
+						<PriceItem content="200-300"></PriceItem>
+						<PriceItem content="300-500"></PriceItem>
+						<PriceItem content="500元以上"></PriceItem>
+					</div>
+				</div>
+				)
+			}
+		})
+		//酒店级别组件
+		var Hotel=React.createClass({
+			componentDidMount:function(){
+				var olist=React.findDOMNode(this.refs.list);
+				olist.style.display="none";
+				
+			},
+			handleClick:function(){
+				var olist=React.findDOMNode(this.refs.list);
+				olist.style.display=olist.style.display=="block"?"none":"block";
+				},
+			render:function(){
+				
+				
+				return (
+				<div className="size">
+				<div onClick={this.handleClick}>酒店级别</div>
+				<div ref="list">
+					<PriceItem content="经济型"></PriceItem>
+					<PriceItem content="二星级"></PriceItem>
+					<PriceItem content="三星级"></PriceItem>
+					<PriceItem content="舒适四星级"></PriceItem>
+					<PriceItem content="高档五星级"></PriceItem>
+				</div>
+				</div>)
+			}
+		})
+		//价格范围Item组件
+		var PriceItem=React.createClass({
+			render:function(){
+				return(
+				<span><input type="checkbox"/>{this.props.content}</span>
+				)
+			}
+		})
+		//酒店列表组件
+		var HotelList=React.createClass({
+			render:function(){
+				return(
+				<div>
+				<span></span>
+				<HotelItem src="img/icon.png" lei="七天快捷酒店" add="东北大学秦皇岛分校" price="108元"></HotelItem>
+				<HotelItem src="img/icon.png" lei="七天快捷酒店" add="东北大学秦皇岛分校" price="108元"></HotelItem>
+				<HotelItem src="img/icon.png" lei="七天快捷酒店" add="东北大学秦皇岛分校" price="108元"></HotelItem>
+				<HotelItem src="img/icon.png" lei="七天快捷酒店" add="东北大学秦皇岛分校" price="108元"></HotelItem>
+				</div>
+				)
+			}
+		})
+		//酒店Item组件
+		var HotelItem=React.createClass({
+			render:function(){
+				return(
+					<table>
+						<td><img src={this.props.src}/></td>
+						<td><span>{this.props.lei}</span>
+							<span>{this.props.add}</span></td>
+						<td>{this.props.price}</td>
+					</table>
+				)
+			}
+		})
+		React.render(
+			<Component/>,document.getElementById("main")
+		)
+		</script>
+	</body>
+</html>
